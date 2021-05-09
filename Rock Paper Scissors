@@ -1,0 +1,54 @@
+using System;
+public class Program
+{
+	static int userWin = 0, userLoss = 0, tie = 0; 
+	public static void Main()
+	{
+		int playOrQuitChoice = 0; 
+		bool keepPlaying = true;
+		int userChoice; 
+		while (keepPlaying) 
+		{
+			Console.WriteLine("Please enter [1] Rock, [2] Paper, [3] Scissors");
+			userChoice = int.Parse(Console.ReadLine());
+			Console.WriteLine(DetermineOutcome(userChoice, ComputerChoice())); 
+			Console.WriteLine("[1]Continue? or [2]Quit");
+			playOrQuitChoice = int.Parse(Console.ReadLine()); 
+			if (playOrQuitChoice == 2) 
+			{
+				keepPlaying = false; 
+			}
+		}
+		Console.WriteLine("Ties: {0}\n Wins: {1}\n Losses:{2}", tie, userWin, userLoss); 
+	}
+
+	static int ComputerChoice() 
+	{
+		int randomNumber = 0; 
+		Random random = new Random();
+		randomNumber = random.Next(1, 4); 
+		return randomNumber; 
+	} 
+
+	static string DetermineOutcome(int userChoice, int compChoice)
+	{
+		string outcome = " "; 
+		if (userChoice == compChoice) 
+		{
+			outcome = "Tie"; 
+			tie++;
+		}
+		else if ((userChoice == 1 && compChoice == 3) || (userChoice == 3 && compChoice == 2) || (userChoice == 2 && compChoice == 1)) 
+		{
+			outcome = "You Win!"; 
+			userWin++;
+		}
+		else if ((userChoice == 3 && compChoice == 1) || (userChoice == 2 && compChoice == 3) || (userChoice == 1 && compChoice == 2))
+		{
+			outcome = "Computer Wins!";
+			userLoss++;
+		}
+
+		return outcome; 
+	}
+} 
