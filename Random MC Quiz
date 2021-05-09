@@ -1,0 +1,78 @@
+using System;
+
+public class Program
+{
+	static int correctAnswers = 0, incorrectAnswers = 0; // creating 2 integer variables. correctAnswers and incorrectAnswers will hold the amount of questions the user answered correctly and incorrectly respectively. They are created here instead of the Main method because I want to use them in another function.
+	public static void Main()
+	{
+		int choice = 0, amountOfQuestions = 0; // creating an integer variable, choice. This will hold the choice of the user whether to retake the quiz or to quit at the end of the quiz. Creating another integer variable, amountOfQuestions, it will hold the amount of questions that the user will choose to be asked. 
+		bool retake = true; // creating a boolean variable. This will hold true or false depending on if the user chooses to retake the test or quit respectively. This will be used to control the while loop (i.e. whether or not the code inside the while loop will execute). Setting to true since I will use it as the condition to the while loop. More on that later.
+		double percentage = 0; // creating a double variable. This will hold the percentage of of correct answers the user got. The reason I created a seperate variable for this is is because I will be using it multiple times (in the function, EndMessage and the Main Method).
+		string[] questions = {"What is the world’s longest river called?\n[1]Canada\t[2]Nile\n[3]File\t  [4]Amazon", "How many bones are there in the human body?\n[1]196\t[2]999\n[3]250\t[4]206", "Which planet is closest to Earth?\n[1]Mars\t [2]Mercury\n[3]Venus\t[4]Moon", "Fe is the chemical symbol for which element?\n[1]Gold\t\t[2]Silver\n[3]Ferrous\t [4]Iron", "What has a gravitational pull so strong that light cannot even escape it?\n[1]Dark Matter\t[2]Black Hole\n[3]Brown Dwarf\t[4]Exoplanet", "Where is the world’s largest active volcano located?\n[1]Antarctica\t[2]Brazil\n[3]California\t[4]Hawaii", "How many hearts does an octopus have?\n[1]03\t[2]01\n[3]18\t[4]5", "What is the rarest blood type? \n[1]O\t[2]A\n[3]B\t[4]AB Negative", "What language is the most spoken worldwide?\n[1]Chinese\t[2]Spanish\n[3]Arabic\t [4]English", "An organic compound is considered an alcohol if it has what functional group?\n[1]Hydroxyl\t [2]Carbonyl\n[3]Alkyl\t\t[4]Aldehyde", "The idea of Socialism was articulated and advanced by whom?\n[1]Karl Marx\t\t[2]Vladimir Lenin\n[3]Joseph Stalin\t[4]John Smith", "What is the fastest animal? \n[1]Cheetah\t\t [2]HorseFly\n[3]Golden Eagle\t[4]Peregrine Falcon", "How many objects are equivalent to one mole?\n[1]6.002 X 10^23\t\t[2]6.02 X 10^22\n[3]6.02 X 10^23\t\t [4]6.002 X 10^22", "How many legs is it biologically impossible for a centipede to have?\n[1]100\t[2]26\n[3]50\t [4]74", "Which of these fruits is NOT a berry?\n[1]Strawberry\t[2]Blueberry\n[3]Banana\t\t[4]Grape" }; // creating an array literal since this will hold all the questions with their options (since the size and elements are known). 
+		string[] hints = {"Rhymes with Pile", "Around 200", "It is also the hottest", "Forms rust when oxidized", "Formed after a supernova", "It is in America", "More than 1", "Has A in it", "Not what you would think", "Ends in -yl", "His name is a homophone of another name", "This animal can fly", "Should've done your Chemistry homework", "Ironic", "Ironic (name is misleading)"}; // creating an array that will hold the hints to each question corresponding to the same index position (as the questions array). Also an array literal for the same reason as above.
+		int[] answers = {2, 4, 3, 4, 2, 4, 1, 4, 1, 1, 1, 4, 3, 1, 1}; // creating an array that will hold the correct answers to each question. The elements (answers) also correspond to each index position of the previous 2 arrays. Also an array literal for the same reasons.
+		int[] userAnswers = new int[15]; // creating an array that will hold the user's answers to each question. Hence, I didn't specify elements. I will get the user's input and compare with the answers array. More on that later.
+		Console.WriteLine("----------------------------------RANDOM TRIVIA QUIZ------------------------------");
+		Console.WriteLine("Welcome to the Random Trivia Quiz!\nSome important things before you start: \n1. You enter the amount of questions you would like (5 - Easy  10 - Medium   15 - Hard or any amount up to 15)\n2. To choose an answer, you pick one of 4 choices\n3. Enjoy!"); 
+		Console.WriteLine("Enter amount of questions (up to 15): ");
+		amountOfQuestions = int.Parse(Console.ReadLine()); // storing user's input (the amount of questions he/she would like) and converting it into an integer.
+		while (retake){ // creating a while loop that will run untless retake is set to false (it will only be set to false when the user chooses to quit). That is when choice = 2. More on that later.
+			for (int i = 0; i < amountOfQuestions; i++) // creating a for loop that will loop through multiple arrays simulataneously to take in the answer of the user, indicate whether it is correct or incorrect (and track them), and gives hints to the user when 0 is pressed. This loop will start at 0 (so that it starts with the first element of each array), and ends at the amount of questions the user specified us (since we have a zero based index, we aren't using <= i.e. the index position of the last element is ALWAYS 1 less than the amount of elements), and goes through each element of the array 1 by 1. The reason I am able to cycle through multiple arrays is that they contain information at the same index positions that I need. For instance, the first question's hint and answer and the answer inputted by the user is at the same index position.
+			{  
+				Console.WriteLine(questions[i]); // prints the element at index position i. the value of i changes at every iteration. For example, i = 3. the 4th question, the question at index position 3 will be printed, then i will become 4 and so on.
+				Console.WriteLine("Answer: "); 
+				Console.WriteLine("Stuck? Get a hint by pressing 0.");
+				userAnswers[i] = int.Parse(Console.ReadLine()); // the empty array, userAnswers, stores the input (answer of the user) and converts it into an integer so that it can be compared to the actual answers in the future.
+				if (userAnswers[i] == 0) // if the user presses 0 (i.e. asks for a hint), the following block of code will be executed.
+				{
+					Console.WriteLine("Hint: " + hints[i]); // prints the element at index position i. Note that this is similar to the questions[i] we looked at previously. As previously mentioned, the hints (elements of hints array) correspond to the questions (elements in the questions array). Meaning that the hint for each question is stored at the same index position as the question.
+					Console.WriteLine("Answer: ");
+					userAnswers[i] = int.Parse(Console.ReadLine()); // same statement as before. The reason this is repeated is because if the user chose a hint (pressed 0), he/she will get a hint. But they won't be able to type the answer since I only asked them once preveiously. Hence, I need to ask them for the answer again if they chose to get a hint. 
+				}
+				Console.WriteLine(DetermineOutcome(userAnswers, answers,  i)); // Calling the function, DetermineOutcome and passing in 3 arguments and printing them.
+				percentage = Math.Round(((double)correctAnswers / (correctAnswers + incorrectAnswers) * 100), 2); // setting the value of percentage variable to the percentage of correct answers. I am adding correct answers with incorrect answers to get the total amount of questions asked. I am dividing the correct answers with the total and multiplying it by 100 to get the percentage of correct answers. Using Math.Round() function to round to 2 decimal places for better readability for the user. Using a cast since correctAnswers is an integer and I need to convert it into a double for it to divide properly.
+				Console.WriteLine("Score: {0} / {1} \nPercentage: {2}%", correctAnswers, (correctAnswers + incorrectAnswers), percentage); // Gives the Score (Correct answers out of total answers) and the percentage of correct answers EACH time the user answers a question. 
+		} 
+		Console.WriteLine(EndMessage(percentage)); // Calling and printing the function, EndMessage and giving it the percentage of correct answers. 
+		Console.WriteLine("Retake Quiz? \n [1] Yes \t [2] No"); 
+		choice = int.Parse(Console.ReadLine()); // stores the choice (about whether the user would like to retake the quiz) into the choice variable and also converts to integer since the choice variable is an integer.
+			if (choice == 2){ // if the user chooses to NOT take the test, hence, choice is 2, then the boolean, retake will be set to false. This will stop the while loop from executing the code inside it since the condition is no longer true and the program ends here since there is no other code after the while loop. 
+					retake = false; // setting retake to false. Explained above.
+			}
+	}
+} // Main
+static string EndMessage (double percentage){ // creating a function, EndMessage. Its purpose is to give the user a message after completing the amount of questions specified by the user (and using percentage to determine what message he/she gets). Return-type is string since it will return a string to the place it was called. static because it won't accept any objects.
+	string message = " "; // creating a variable that will hold the message given corresponding to the percentage the user got. This will be ultimately returned back to where it was called. 
+	if (percentage >= 90){
+		message = "WOW! You are good!";
+	}
+	else if (percentage < 90 && percentage >= 75){
+		message = "Nice Job!";
+	}
+	else if (percentage < 75 && percentage >= 55){
+		message = "Not too shabby";
+	}
+	else if (percentage < 55 && percentage >= 35){
+		message = "Better Luck Next Time!";
+	}
+	else {
+		message = "Yikes! I KNOW you can do better";
+	}
+	// All of these if, else if, and else statments will modify the value of the variable, message, according to how well the user did in the quiz (using percentage as a metric). 
+	return message; // returns the value of message back to the place it was called.
+} // EndMessage
+	static string DetermineOutcome(int [] userAnswers, int [] answers, int i){ // Creating a function, DetermineOutcome. It's purpose is to determine the outcome. It will find whether or not the user got the answer correct (and updates the amount of correctAnswers and incorrectAnswers accordingly) and it returns a string that will specify the user about whether he/she got it correct or incorrect (provided that it is printed onto the console). 
+		string outcome = " "; // Creating a string variable. It will hold a string with the value "CORRECT!" or "INCORRECT!".
+		if (userAnswers[i] == answers[i]) // if the answer user types in is the same as the array that holds the correct answers, the following block of code will be executed. i.e. if the user picks the right answer.
+				{
+					outcome = "CORRECT!"; // updates the value of the outcome variable to "CORRECT!".
+					correctAnswers++; // Increases the value of the correctAnswers by 1.
+				}
+				else // if the above if statement is false, this block of code will be executed.
+				{
+					outcome = "INCORRECT!"; // updates the value of the outcome variable to "INCORRECT!".
+					incorrectAnswers++; // Increases the value of the incorrectAnswers by 1.
+				}
+				return outcome; // returns the value of outcome wherever it was called.
+	}
+} // Class
