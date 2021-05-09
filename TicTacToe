@@ -1,0 +1,196 @@
+using System;
+public class Program
+{
+	static bool playingWholeGame = true, playingTurn = true;  
+	static int xWins = 0, oWins = 0, draws = 0;
+	static string playerSign = "X";             
+	static string[] playersNames = new string[2];  
+	
+	public static void Main()
+	{
+		bool replay = true;  
+		int player = 1, choice = 0, turns = 0, position = 0; 
+		string[, ] ticTacToeBoard = new string[3, 3];
+		Console.WriteLine("Player 1 Name: ");
+		playersNames[0] = Console.ReadLine(); 
+		Console.WriteLine("Player 2 Name: ");
+		playersNames[1] = Console.ReadLine();
+		BoardSetup(ticTacToeBoard); 
+		Console.WriteLine("{0}: X \n{1}: O", playersNames[0], playersNames[1]);
+		while (replay) 
+		{
+			while (playingWholeGame) 
+			{
+				PrintBoard(ticTacToeBoard); 
+				playingTurn = true; 
+				while (playingTurn)
+				{
+					if (player == 1) 
+						Console.WriteLine("{0}'s turn: ", playersNames[0]); 
+					else
+						Console.WriteLine("{0}'s turn: ", playersNames[1]);
+					position = int.Parse(Console.ReadLine()); 
+					Play(ticTacToeBoard, position, player); 
+				}
+
+				turns++; 
+				DetermineOutcome(ticTacToeBoard, player, turns); 
+				playerSign = (player == 1) ? "O" : "X"; 
+				player = (player == 1) ? 2 : 1; 
+			}
+
+			Console.WriteLine("[1]Play Again [2]Quit");
+			choice = int.Parse(Console.ReadLine());
+			if (choice == 2) 
+			{
+				replay = false; 
+			}
+			else if (choice == 1) 
+			{
+				BoardSetup(ticTacToeBoard);
+				turns = 0; 
+				playingWholeGame = true;
+			}
+		} // replay
+
+		Console.WriteLine("Total Games: {0} \n{1}'s Wins(X): {2} \n{3}'s Wins(O): {4} \nDraws: {5}", (xWins + oWins + draws), playersNames[0], xWins, playersNames[1], oWins, draws); // gets the total games by adding the x's wins, o's wins, and draws (all outcomes possible).
+	} // Main
+
+	static void BoardSetup(string[, ] ticTacToeBoard)
+	{
+		for (int i = 0; i < 3; i++) 
+		{
+			for (int j = 0; j < 3; j++)  
+			{
+				ticTacToeBoard[i, j] = ((i * 3) + j + 1).ToString(); 
+			}
+		}
+	} // BoardSetup
+
+	static void PrintBoard(string[, ] ticTacToeBoard)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				Console.Write(ticTacToeBoard[i, j] + " "); 
+			}
+
+			Console.WriteLine(); 
+		}
+	} // PrintBoard
+
+	static void DetermineOutcome(string[, ] ticTacToeBoard, int player, int turns)  
+	{
+		if ((ticTacToeBoard[0, 0].Equals(playerSign) && ticTacToeBoard[0, 1].Equals(playerSign) && ticTacToeBoard[0, 2].Equals(playerSign)))
+		{
+			PrintWinner(player); 
+		}
+		else if ((ticTacToeBoard[1, 0].Equals(playerSign) && ticTacToeBoard[1, 1].Equals(playerSign) && ticTacToeBoard[1, 2].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		else if ((ticTacToeBoard[2, 0].Equals(playerSign) && ticTacToeBoard[2, 1].Equals(playerSign) && ticTacToeBoard[2, 2].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		// all 3 horizontal wins possible. 
+		else if ((ticTacToeBoard[0, 0].Equals(playerSign) && ticTacToeBoard[1, 0].Equals(playerSign) && ticTacToeBoard[2, 0].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		else if ((ticTacToeBoard[0, 1].Equals(playerSign) && ticTacToeBoard[1, 1].Equals(playerSign) && ticTacToeBoard[2, 1].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		else if ((ticTacToeBoard[0, 2].Equals(playerSign) && ticTacToeBoard[1, 2].Equals(playerSign) && ticTacToeBoard[2, 2].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		// all 3 vertical wins possible
+		else if ((ticTacToeBoard[0, 0].Equals(playerSign) && ticTacToeBoard[1, 1].Equals(playerSign) && ticTacToeBoard[2, 2].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		else if ((ticTacToeBoard[0, 2].Equals(playerSign) && ticTacToeBoard[1, 1].Equals(playerSign) && ticTacToeBoard[2, 0].Equals(playerSign)))
+		{
+			PrintWinner(player);
+		}
+		// all 2 diagonal wins possible
+		else if (turns == 9)
+		{
+			Console.WriteLine("Draw");
+			draws++; 
+			playingWholeGame = false; 
+		}
+	} // DetermineOutcome
+
+	static void PrintWinner(int player)
+	{
+		if (player == 1) 
+		{
+			Console.WriteLine("{0} Won!", playersNames[0]);
+			xWins++; 
+		}
+		else 
+		{
+			Console.WriteLine("{0} Won!", playersNames[1]);
+			oWins++;
+		}
+
+		playingWholeGame = false; 
+	}
+
+	static void Play(string[,] ticTacToeBoard, int position, int player) 
+	{
+		if (position == 1 && ticTacToeBoard[0, 0].Equals("1"))
+		{
+			ticTacToeBoard[0, 0] = playerSign; 
+			playingTurn = false;
+		}
+		else if (position == 2 && ticTacToeBoard[0, 1].Equals("2"))
+		{
+			ticTacToeBoard[0, 1] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 3 && ticTacToeBoard[0, 2].Equals("3"))
+		{
+			ticTacToeBoard[0, 2] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 4 && ticTacToeBoard[1, 0].Equals("4"))
+		{
+			ticTacToeBoard[1, 0] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 5 && ticTacToeBoard[1, 1].Equals("5"))
+		{
+			ticTacToeBoard[1, 1] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 6 && ticTacToeBoard[1, 2].Equals("6"))
+		{
+			ticTacToeBoard[1, 2] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 7 && ticTacToeBoard[2, 0].Equals("7"))
+		{
+			ticTacToeBoard[2, 0] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 8 && ticTacToeBoard[2, 1].Equals("8"))
+		{
+			ticTacToeBoard[2, 1] = playerSign;
+			playingTurn = false;
+		}
+		else if (position == 9 && ticTacToeBoard[2, 2].Equals("9"))
+		{
+			ticTacToeBoard[2, 2] = playerSign;
+			playingTurn = false;
+		}
+		else 
+		{
+			Console.WriteLine("Invalid Position!");
+		}
+	} // Play
+} // MainClass	
